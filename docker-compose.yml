@@ -1,0 +1,30 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: game-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    # --- 👇 เพิ่ม 2 บรรทัดนี้ ---
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+
+  # --- เพิ่ม service นี้เข้าไป ---
+  mongo-express:
+    image: mongo-express
+    container_name: game-mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    # --- 👇 แก้ไข/เพิ่ม 3 บรรทัดนี้ ---
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root   # ◀️ เพิ่ม
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password # ◀️ เพิ่ม
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true      # ◀️ แก้จาก false
+
+volumes:
+  mongo_data:
