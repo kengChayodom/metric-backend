@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import se331.metricbackend.entity.Game;
 
+import java.util.List;
 import java.util.Optional;
 
 // 1. เปลี่ยนเป็น MongoRepository และ ID เป็น String
@@ -16,4 +17,10 @@ public interface GameRepository extends MongoRepository<Game, String> {
     Page<Game> findByCategories_Id(String categoryId, Pageable pageable);
 
     Page<Game> findByTitleContainingIgnoreCaseAndCategories_Id(String title, String categoryId, Pageable pageable);
+
+    // เอาเฉพาะเกมที่มี homepagePosition ไม่เป็น null
+    List<Game> findByHomepagePositionNotNullOrderByHomepagePositionAsc();
+
+    // เอาเฉพาะเกมที่มี newReleasePosition ไม่เป็น null
+    List<Game> findByNewReleasePositionNotNullOrderByNewReleasePositionAsc();
 }
