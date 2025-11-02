@@ -47,7 +47,7 @@ public class AuthenticationService {
             .username(request.getEmail())
             .enabled(true)
             .password(passwordEncoder.encode(request.getPassword()))
-            .roles(List.of(Role.ROLE_READER))
+            .roles(List.of(Role.ROLE_USER))
             .profileImage(profileImage)
             .build();
 
