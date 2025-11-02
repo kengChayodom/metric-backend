@@ -21,18 +21,17 @@ import se331.metricbackend.security.user.User;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "tokens") // <-- 1. เปลี่ยนเป็น @Document
+@Document(collection = "tokens")
 public class Token {
 
-  @Id // <-- 2. เปลี่ยนเป็น @Id ของ Spring Data
-  private String id; // <-- 3. เปลี่ยนเป็น String (สำหรับ ObjectId)
+  @Id
+  private String id;
 
-  // (ลบ @GeneratedValue)
 
-  @Indexed(unique = true) // <-- 4. เปลี่ยน @Column(unique=true) เป็น @Indexed
+  @Indexed(unique = true)
   public String token;
 
-  // (ลบ @Enumerated) MongoDB เก็บ Enum เป็น String ให้โดยอัตโนมัติ
+
   @Builder.Default
   public TokenType tokenType = TokenType.BEARER;
 
@@ -40,7 +39,6 @@ public class Token {
 
   public boolean expired;
 
-  @DBRef // <-- 5. เปลี่ยน @ManyToOne เป็น @DBRef
-  // (ลบ @JoinColumn)
+  @DBRef
   public User user;
 }

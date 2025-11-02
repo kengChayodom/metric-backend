@@ -13,4 +13,7 @@ public interface GameRepository extends MongoRepository<Game, String> {
     // 2. Spring Data MongoDB จะสร้างคิวรีสำหรับค้นหา title ให้อัตโนมัติ
     // (ค้นหาแบบ case-insensitive และมีคำว่า title อยู่)
     Page<Game> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+    Page<Game> findByCategories_Id(String categoryId, Pageable pageable);
+
+    Page<Game> findByTitleContainingIgnoreCaseAndCategories_Id(String title, String categoryId, Pageable pageable);
 }

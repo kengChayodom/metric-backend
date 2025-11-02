@@ -49,7 +49,6 @@ public class User implements UserDetails {
 
   private String password;
 
-  // --- รวมฟิลด์จากสคริปต์ SQL เดิมของคุณ ---
   private String firstname;
   private String lastname;
   private String phoneNumber;
@@ -59,12 +58,10 @@ public class User implements UserDetails {
   @Builder.Default
   private Boolean enabled = true;
 
-  // --- @ElementCollection และ @Enumerated ไม่จำเป็นสำหรับ MongoDB ---
   @Builder.Default
   private List<Role> roles = new ArrayList<>(); // MongoDB เก็บ List<Enum> ได้เลย
 
-  // --- เปลี่ยน @OneToMany เป็น @DBRef ---
-  @DBRef // บอก Spring ให้เก็บเป็น Reference ID
+  @DBRef
   @Builder.Default
   private List<Token> tokens = new ArrayList<>();
 

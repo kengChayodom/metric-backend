@@ -11,4 +11,6 @@ public interface GameService {
     Game createGame(GameDTO gameDTO);
     Game updateGame(String id, GameDTO gameDTO);
     void deleteGame(String id);
+    Page<Game> getGamesByCategoryId(String categoryId, Integer pageSize, Integer page);
+    Page<Game> getGames(String title, String categoryId, String priceFilter, Integer pageSize, Integer page);
 }

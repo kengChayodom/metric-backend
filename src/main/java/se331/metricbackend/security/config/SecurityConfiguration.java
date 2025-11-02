@@ -45,7 +45,6 @@ public class SecurityConfiguration {
                             .requestMatchers(HttpMethod.POST, "/**").permitAll()
                             .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
                             .requestMatchers(HttpMethod.PUT, "/**").permitAll()
-                            // อนุญาต preflight CORS ทุกเส้นทาง
                             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
 
@@ -74,7 +73,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of("http://localhost:5173/*", "http://13.212.6.216:8001" , "http://20.198.240.252:*"));
+        config.setAllowedOriginPatterns(List.of("http://localhost:5173", "http://13.212.6.216:8001" , "http://20.198.240.252:*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("x-total-count"));
@@ -89,7 +88,7 @@ public class SecurityConfiguration {
     public FilterRegistrationBean<CorsFilter> corsFilterBean() {
         FilterRegistrationBean<CorsFilter> bean =
                 new FilterRegistrationBean<>(new CorsFilter(corsConfigurationSource()));
-        bean.setOrder(Ordered.HIGHEST_PRECEDENCE); // run before Security/JWT
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
     }
 

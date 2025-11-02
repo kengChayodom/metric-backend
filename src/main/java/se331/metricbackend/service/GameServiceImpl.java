@@ -75,4 +75,16 @@ public class GameServiceImpl implements GameService {
     public void deleteGame(String id) {
         gameDao.deleteById(id);
     }
+    @Override
+    public Page<Game> getGamesByCategoryId(String categoryId, Integer pageSize, Integer page) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        return gameDao.getGamesByCategoryId(categoryId, pageable);
+    }
+
+    @Override
+    public Page<Game> getGames(String title, String categoryId, String priceFilter, Integer pageSize, Integer page) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        // ส่งต่อทั้งหมดไปยัง DAO
+        return gameDao.getGames(title, categoryId, priceFilter, pageable);
+    }
 }

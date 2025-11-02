@@ -12,4 +12,7 @@ public interface GameDao {
     Page<Game> getGames(Pageable pageable);
     Page<Game> getGames(String title, Pageable pageable);
     void deleteById(String id);
+    Page<Game> getGamesByCategoryId(String categoryId, Pageable pageable);
+    Page<Game> getGames(String title, String categoryId, String priceFilter, Pageable pageable);
+
 }

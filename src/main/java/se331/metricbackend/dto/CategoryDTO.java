@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDTO {
+    private String id;
     private String name;
-    private String categoryImage; // รับ URL เป็น String
+    private String categoryImage;
 }

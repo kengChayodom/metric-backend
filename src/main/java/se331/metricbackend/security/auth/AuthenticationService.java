@@ -22,7 +22,6 @@ import se331.metricbackend.util.LapMapper;
 import java.io.IOException;
 import java.util.List;
 
-// ... (imports) ...
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +34,7 @@ public class AuthenticationService {
 
   public AuthenticationResponse register(RegisterRequest request) {
 
-    // 1. [ข้อควรระวัง] การจับคู่ Image
-    // RegisterRequest ของคุณมี List<String> image
-    // แต่ User Document ของคุณมี String profileImage
-    // นี่คือการแก้ไขโดยสมมติว่าให้ใช้รูปแรกใน List เป็น profileImage
+
     String profileImage = null;
     if (request.getImage() != null && !request.getImage().isEmpty()) {
       profileImage = request.getImage().get(0);
@@ -52,7 +48,7 @@ public class AuthenticationService {
             .enabled(true)
             .password(passwordEncoder.encode(request.getPassword()))
             .roles(List.of(Role.ROLE_READER))
-            .profileImage(profileImage) // <-- 2. แก้ไข Field ให้ตรงกับ User Document
+            .profileImage(profileImage)
             .build();
 
     var savedUser = repository.save(user);
@@ -60,13 +56,9 @@ public class AuthenticationService {
     var refreshToken = jwtService.generateRefreshToken(user);
     saveUserToken(savedUser, jwtToken);
 
-    // 3. [ข้อควรระวัง] DEBUG แก้ไข Field
-    // System.out.println("DEBUG images: " + savedUser.getImage()); // <-- .getImage() ไม่มีแล้ว
     System.out.println("DEBUG images: " + savedUser.getProfileImage());
 
-    // 4. [ข้อควรระวัง] Mapper/DTO
-    // LapMapper และ UserReporter DTO ของคุณ *ต้อง* ถูกอัปเดต
-    // ให้รับ 'id' เป็น String แทน Integer ด้วย
+
     return AuthenticationResponse.builder()
             .accessToken(jwtToken)
             .refreshToken(refreshToken)
@@ -75,7 +67,6 @@ public class AuthenticationService {
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
-    // ... (ส่วน authenticate ไม่ต้องแก้) ...
     authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                     request.getUsername(),
@@ -128,7 +119,7 @@ public class AuthenticationService {
           HttpServletRequest request,
           HttpServletResponse response
   ) throws IOException {
-    // ... (ส่วนนี้ไม่ต้องแก้ไข) ...
+
     final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
     final String refreshToken;
     final String userEmail;
