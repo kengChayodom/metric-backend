@@ -41,7 +41,8 @@ public class SecurityConfiguration {
                 .csrf((crsf) -> crsf.disable())
                 .authorizeHttpRequests((authorize) -> {
                     authorize.requestMatchers("/api/v1/auth/**").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/games/**", "/categories/**", "/homePage").permitAll()
+                            .requestMatchers("/cart/**", "/orders/**").authenticated()
                             .requestMatchers(HttpMethod.POST, "/**").permitAll()
                             .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
                             .requestMatchers(HttpMethod.PUT, "/**").permitAll()
