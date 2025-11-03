@@ -23,7 +23,6 @@ public class OrderController {
     public ResponseEntity<?> createOrderFromCart() {
         try {
             UserOrder newOrder = orderService.checkout();
-            // 🔽🔽🔽 แปลงเป็น UserOrderDTO 🔽🔽🔽
             return ResponseEntity.ok(LapMapper.INSTANCE.toUserOrderDTO(newOrder));
         } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -33,8 +32,13 @@ public class OrderController {
     @GetMapping("/history")
     public ResponseEntity<?> getOrderHistory() {
         List<UserOrder> history = orderService.getOrderHistory();
-        // 🔽🔽🔽 แปลงเป็น List<UserOrderDTO> 🔽🔽🔽
         return ResponseEntity.ok(LapMapper.INSTANCE.toUserOrderDTOs(history));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllOrdersForAdmin() {
+        List<UserOrder> allOrders = orderService.findAllOrders();
+        return ResponseEntity.ok(LapMapper.INSTANCE.toUserOrderDTOs(allOrders));
     }
 
 }
