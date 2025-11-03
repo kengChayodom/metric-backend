@@ -58,4 +58,35 @@ public class UserController {
 
     }
 
+    @GetMapping("/users/me")
+    public ResponseEntity<UserReporter> getMe(@AuthenticationPrincipal User currentUser) {
+        if (currentUser == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        }
+
+        // แนะนำให้โหลดจาก DB อีกครั้งเพื่อให้ข้อมูล (เช่น roles/enabled) เป็นปัจจุบันเสมอ
+        User user = userService.findById(currentUser.getId());
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+
+        return ResponseEntity.ok(LapMapper.INSTANCE.getUserReporterDto(user));
+    }
+    
+    @PutMapping("/users/edit")
+    public ResponseEntity<UserReporter> updateUser(@RequestBody UserReporter userReporter) {
+        User user = userService.findById(userReporter.getId());
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+
+        // อัพเดตฟิลด์ที่อนุญาตให้แก้ไข
+        user.setFirstname(userReporter.getFirstname());
+        user.setLastname(userReporter.getLastname());
+        user.setEmail(userReporter.getEmail());
+        user.setPassword(userReporter.getPassword());
+        
+        User updatedUser = userService.save(user);
+        return ResponseEntity.ok(LapMapper.INSTANCE.getUserReporterDto(updatedUser));
+    }
 }

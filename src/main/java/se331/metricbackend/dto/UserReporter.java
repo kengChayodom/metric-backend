@@ -21,6 +21,8 @@ public class UserReporter {
     private String username;
     private String email;
     private String profileImage;
+    private String password;
+
 
     // 2. นี่คือส่วนที่เช็ค "Role Admin" ที่คุณบอกครับ
     // Frontend จะได้รับ List นี้ (เช่น ["ROLE_READER", "ROLE_ADMIN"])
