@@ -6,8 +6,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import se331.metricbackend.dto.UpdateMeRequest;
 import se331.metricbackend.dto.UserReporter;
 import se331.metricbackend.security.user.Role;
 import se331.metricbackend.security.user.User;
@@ -23,6 +25,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+
 
 
     @GetMapping("users")
@@ -72,21 +76,36 @@ public class UserController {
 
         return ResponseEntity.ok(LapMapper.INSTANCE.getUserReporterDto(user));
     }
-    
-    @PutMapping("/users/edit")
-    public ResponseEntity<UserReporter> updateUser(@RequestBody UserReporter userReporter) {
-        User user = userService.findById(userReporter.getId());
+
+    @PutMapping("/users/me")
+    public ResponseEntity<UserReporter> updateMe(
+            @AuthenticationPrincipal User currentUser,
+            @RequestBody UpdateMeRequest req
+    ) {
+        if (currentUser == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        }
+
+        User user = userService.findById(currentUser.getId());
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
 
-        // อัพเดตฟิลด์ที่อนุญาตให้แก้ไข
-        user.setFirstname(userReporter.getFirstname());
-        user.setLastname(userReporter.getLastname());
-        user.setEmail(userReporter.getEmail());
-        user.setPassword(userReporter.getPassword());
-        
-        User updatedUser = userService.save(user);
-        return ResponseEntity.ok(LapMapper.INSTANCE.getUserReporterDto(updatedUser));
+        // อัปเดตเฉพาะฟิลด์ที่อนุญาต
+        if (req.getFirstname() != null) user.setFirstname(req.getFirstname());
+        if (req.getLastname() != null) user.setLastname(req.getLastname());
+        if (req.getEmail() != null) user.setEmail(req.getEmail());
+        if (req.getProfileImage() != null) user.setProfileImage(req.getProfileImage());
+
+        // ✅ ถ้ามีรหัสผ่านใหม่
+        if (req.getNewPassword() != null && !req.getNewPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(req.getNewPassword()));
+        }
+
+        User updated = userService.save(user);
+        return ResponseEntity.ok(LapMapper.INSTANCE.getUserReporterDto(updated));
     }
+
+
+
 }
