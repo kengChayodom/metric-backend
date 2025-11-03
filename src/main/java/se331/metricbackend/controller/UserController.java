@@ -92,6 +92,7 @@ public class UserController {
         }
 
         // อัปเดตเฉพาะฟิลด์ที่อนุญาต
+        if (req.getUsername() != null) user.setUsername(req.getUsername());
         if (req.getFirstname() != null) user.setFirstname(req.getFirstname());
         if (req.getLastname() != null) user.setLastname(req.getLastname());
         if (req.getEmail() != null) user.setEmail(req.getEmail());

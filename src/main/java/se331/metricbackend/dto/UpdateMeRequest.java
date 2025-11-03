@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class UpdateMeRequest {
+    private String username;
     private String firstname;
     private String lastname;
     private String email;
