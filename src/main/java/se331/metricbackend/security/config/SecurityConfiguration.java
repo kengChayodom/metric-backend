@@ -44,11 +44,39 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authorize) -> {
                     authorize.requestMatchers("/api/v1/auth/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/games/**", "/categories/**", "/homePage").permitAll()
-                            .requestMatchers("/cart/**", "/orders/**","/users/**").authenticated()
-                            .requestMatchers(HttpMethod.POST, "/**").permitAll()
-                            .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
-                            .requestMatchers(HttpMethod.PUT, "/**").permitAll()
-                            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/orders/**").authenticated()
+                            .requestMatchers(HttpMethod.POST, "/orders/**").authenticated()
+                            .requestMatchers(HttpMethod.POST, "/orders/**").authenticated()
+
+                            .requestMatchers(HttpMethod.POST, "/categories/*").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/categories/*").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/categories/*").hasRole("ADMIN")
+
+                            .requestMatchers(HttpMethod.POST, "/games/*").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/games/*").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/games/*").hasRole("ADMIN")
+
+                            .requestMatchers(HttpMethod.POST, "/cart/*").authenticated()
+                            .requestMatchers(HttpMethod.DELETE, "/cart/*").authenticated()
+                            .requestMatchers(HttpMethod.GET, "/cart/*").authenticated()
+
+                            .requestMatchers(HttpMethod.GET, "/users/*").authenticated()
+                            .requestMatchers(HttpMethod.PUT, "/users/*").authenticated()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
