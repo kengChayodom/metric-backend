@@ -19,7 +19,10 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<UserOrder> findByUserId(String userId) {
-        // ใช้เมธอดที่เราสร้างไว้ใน Repository
         return userOrderRepository.findByUser_IdOrderByOrderDateDesc(userId);
+    }
+    @Override
+    public List<UserOrder> findAll() {
+        return userOrderRepository.findAll();
     }
 }

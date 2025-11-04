@@ -93,7 +93,7 @@ public class InitApp implements CommandLineRunner {
                 .email("enabled@user.com")
                 .profileImage("https://xvizzlwlipdsxerekvvk.supabase.co/storage/v1/object/public/BamminionsBucket/Cat.jpg") // แก้ไข Field
                 .enabled(true)
-                .roles(new ArrayList<>(List.of(Role.ROLE_MEMBER)))
+                .roles(new ArrayList<>(List.of(Role.ROLE_USER)))
                 .build();
 
         User user3 = User.builder()
@@ -104,7 +104,7 @@ public class InitApp implements CommandLineRunner {
                 .email("disableUser@user.com")
                 .profileImage("https://xvizzlwlipdsxerekvvk.supabase.co/storage/v1/object/public/BamminionsBucket/202510304236819-IMG_0119.jpeg") // แก้ไข Field
                 .enabled(false) // User นี้ถูกปิด
-                .roles(new ArrayList<>(List.of(Role.ROLE_MEMBER)))
+                .roles(new ArrayList<>(List.of(Role.ROLE_USER)))
                 .build();
 
         User user4 = User.builder()
@@ -115,7 +115,7 @@ public class InitApp implements CommandLineRunner {
                 .email("keng@user.com")
                 .profileImage("https://xvizzlwlipdsxerekvvk.supabase.co/storage/v1/object/public/BamminionsBucket/Kevin.png") // แก้ไข Field
                 .enabled(true)
-                .roles(new ArrayList<>(List.of(Role.ROLE_MEMBER)))
+                .roles(new ArrayList<>(List.of(Role.ROLE_USER)))
                 .build();
 
         User user5 = User.builder()
@@ -126,7 +126,7 @@ public class InitApp implements CommandLineRunner {
                 .email("mean@user.com")
                 .profileImage("https://xvizzlwlipdsxerekvvk.supabase.co/storage/v1/object/public/BamminionsBucket/Bob.png") // แก้ไข Field
                 .enabled(true)
-                .roles(new ArrayList<>(List.of(Role.ROLE_MEMBER)))
+                .roles(new ArrayList<>(List.of(Role.ROLE_USER)))
                 .build();
 
         User user6 = User.builder()
@@ -137,7 +137,7 @@ public class InitApp implements CommandLineRunner {
                 .email("guide@user.com")
                 .profileImage("https://xvizzlwlipdsxerekvvk.supabase.co/storage/v1/object/public/BamminionsBucket/Stuart.png") // แก้ไข Field
                 .enabled(true)
-                .roles(new ArrayList<>(List.of(Role.ROLE_MEMBER)))
+                .roles(new ArrayList<>(List.of(Role.ROLE_USER)))
                 .build();
 
         userRepository.saveAll(List.of(user1, user2, user3, user4, user5, user6));

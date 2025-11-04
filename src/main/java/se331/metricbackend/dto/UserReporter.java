@@ -22,6 +22,7 @@ public class UserReporter {
     private String email;
     private String profileImage;
 
+
     // 2. นี่คือส่วนที่เช็ค "Role Admin" ที่คุณบอกครับ
     // Frontend จะได้รับ List นี้ (เช่น ["ROLE_READER", "ROLE_ADMIN"])
     // และใช้ตัดสินใจว่าจะแสดงปุ่ม Admin Panel หรือไม่

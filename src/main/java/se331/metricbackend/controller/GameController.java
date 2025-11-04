@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se331.metricbackend.dto.GameDTO;
+import se331.metricbackend.dto.PositionRequest;
 import se331.metricbackend.entity.Game;
 import se331.metricbackend.service.GameService;
 import se331.metricbackend.util.LapMapper;
@@ -75,4 +76,36 @@ public class GameController {
         gameService.deleteGame(id);
         return ResponseEntity.ok("Game with id " + id + " has been deleted.");
     }
+
+    @PutMapping("/{id}/feature")
+    public ResponseEntity<?> updateFeatured(
+            @PathVariable String id,
+            @RequestBody PositionRequest request
+    ) {
+        Game updated = gameService.setFeaturedPosition(id, request.getPosition());
+        return ResponseEntity.ok(LapMapper.INSTANCE.toGameDTO(updated));
+    }
+
+    @PutMapping("/{id}/new-release")
+    public ResponseEntity<?> updateNewRelease(
+            @PathVariable String id,
+            @RequestBody PositionRequest request
+    ) {
+        Game updated = gameService.setNewReleasePosition(id, request.getPosition());
+        return ResponseEntity.ok(LapMapper.INSTANCE.toGameDTO(updated));
+    }
+
+
+    @DeleteMapping("/{id}/feature")
+    public ResponseEntity<?> removeFeatured(@PathVariable String id) {
+        Game updated = gameService.setFeaturedPosition(id, null);
+        return ResponseEntity.ok(LapMapper.INSTANCE.toGameDTO(updated));
+    }
+
+    @DeleteMapping("/{id}/new-release")
+    public ResponseEntity<?> removeNewRelease(@PathVariable String id) {
+        Game updated = gameService.setNewReleasePosition(id, null);
+        return ResponseEntity.ok(LapMapper.INSTANCE.toGameDTO(updated));
+    }
+
 }

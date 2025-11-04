@@ -73,6 +73,7 @@ public interface LapMapper {
     // (ขาออก)
     UserReporter getUserReporterDto(User user);
 
+    List<UserReporter> getUserReporters(List<User> users);
     // ===================================
     // 4. Cart Mappers (ที่เติมให้)
     // ===================================

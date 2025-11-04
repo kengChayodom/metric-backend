@@ -32,7 +32,7 @@ public class CartController {
     /**
      * เพิ่มสินค้า (หรืออัปเดตจำนวนถ้ามีอยู่แล้ว)
      */
-    @PostMapping("/item")
+    @PostMapping("/add")
     public ResponseEntity<?> addItemToCart(@RequestBody CartItemDTO itemDTO) {
         Cart updatedCart = cartService.addItemToCart(itemDTO);
         // 🔽🔽🔽 3. แก้ไขชื่อ DTO และชื่อเมธอด 🔽🔽🔽

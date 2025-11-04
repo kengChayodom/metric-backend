@@ -37,4 +37,7 @@ public class Game {
     // @DBRef จะบอก Spring ให้เก็บแค่ ID แต่ตอนดึงข้อมูลให้ไป Join มาให้
     @DBRef
     private List<Category> categories;
+
+    private Integer homepagePosition;     
+    private Integer newReleasePosition;
 }

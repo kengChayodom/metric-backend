@@ -13,4 +13,6 @@ public interface GameService {
     void deleteGame(String id);
     Page<Game> getGamesByCategoryId(String categoryId, Integer pageSize, Integer page);
     Page<Game> getGames(String title, String categoryId, String priceFilter, Integer pageSize, Integer page);
+    Game setFeaturedPosition(String gameId, Integer position);
+    Game setNewReleasePosition(String gameId, Integer position);
 }

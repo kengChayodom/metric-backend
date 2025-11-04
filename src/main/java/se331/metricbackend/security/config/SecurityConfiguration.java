@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -41,11 +43,40 @@ public class SecurityConfiguration {
                 .csrf((crsf) -> crsf.disable())
                 .authorizeHttpRequests((authorize) -> {
                     authorize.requestMatchers("/api/v1/auth/**").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/**").permitAll()
-                            .requestMatchers(HttpMethod.POST, "/**").permitAll()
-                            .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
-                            .requestMatchers(HttpMethod.PUT, "/**").permitAll()
-                            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/games/**", "/categories/**", "/homePage").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/orders/**").authenticated()
+                            .requestMatchers(HttpMethod.POST, "/orders/**").authenticated()
+                            .requestMatchers(HttpMethod.POST, "/orders/**").authenticated()
+
+                            .requestMatchers(HttpMethod.POST, "/categories/*").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/categories/*").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/categories/*").hasRole("ADMIN")
+
+                            .requestMatchers(HttpMethod.POST, "/games/*").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/games/*").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/games/*").hasRole("ADMIN")
+
+                            .requestMatchers(HttpMethod.POST, "/cart/*").authenticated()
+                            .requestMatchers(HttpMethod.DELETE, "/cart/*").authenticated()
+                            .requestMatchers(HttpMethod.GET, "/cart/*").authenticated()
+
+                            .requestMatchers(HttpMethod.GET, "/users/*").authenticated()
+                            .requestMatchers(HttpMethod.PUT, "/users/*").authenticated()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -91,5 +122,8 @@ public class SecurityConfiguration {
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
     }
+
+  
+
 
 }

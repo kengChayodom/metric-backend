@@ -87,4 +87,20 @@ public class GameServiceImpl implements GameService {
         // ส่งต่อทั้งหมดไปยัง DAO
         return gameDao.getGames(title, categoryId, priceFilter, pageable);
     }
+
+    public Game setFeaturedPosition(String gameId, Integer position) {
+        Game game = gameDao.findById(gameId)
+                .orElseThrow(() -> new RuntimeException("Game not found"));
+
+        game.setHomepagePosition(position); // อัปเดตแค่ featured slot
+        return gameDao.save(game);
+    }
+
+    public Game setNewReleasePosition(String gameId, Integer position) {
+        Game game = gameDao.findById(gameId)
+                .orElseThrow(() -> new RuntimeException("Game not found"));
+
+        game.setNewReleasePosition(position); // อัปเดตแค่ new release slot
+        return gameDao.save(game);
+    }
 }

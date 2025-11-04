@@ -24,45 +24,38 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public UserOrder checkout() {
-        // 1. ดึง User ที่ล็อกอินอยู่
         User user = getCurrentUser();
 
-        // 2. ดึงตะกร้าปัจจุบันของ User
         Cart cart = cartService.getCartForCurrentUser();
         if (cart.getItems() == null || cart.getItems().isEmpty()) {
             throw new RuntimeException("Cart is empty. Cannot checkout.");
         }
 
-        // 3. แปลง CartItem -> OrderItem (พร้อมคัดลอกข้อมูล Denormalized)
         List<UserOrder.OrderItem> orderItems = cart.getItems().stream()
                 .map(cartItem -> UserOrder.OrderItem.builder()
-                        .game(cartItem.getGame()) // @DBRef
+                        .game(cartItem.getGame())
                         .priceAtPurchase(cartItem.getPriceAtPurchase())
                         .quantity(cartItem.getQuantity())
                         .platform(cartItem.getPlatform())
-                        .title(cartItem.getTitle()) // Denormalized
-                        .mainImageUrl(cartItem.getMainImageUrl()) // Denormalized
+                        .title(cartItem.getTitle())
+                        .mainImageUrl(cartItem.getMainImageUrl())
                         .build())
                 .collect(Collectors.toList());
 
-        // 4. คำนวณยอดรวม
         Double totalAmount = orderItems.stream()
                 .mapToDouble(item -> item.getPriceAtPurchase() * item.getQuantity())
                 .sum();
 
-        // 5. สร้าง Order ใหม่
         UserOrder newOrder = UserOrder.builder()
                 .user(user)
                 .items(orderItems)
                 .totalAmount(totalAmount)
-                .status("completed") // สถานะเริ่มต้น
+                .status("completed")
                 .orderDate(LocalDateTime.now())
                 .build();
 
-        // 6. บันทึก Order
         UserOrder savedOrder = orderDao.save(newOrder);
 
-        // 7. (สำคัญมาก) ล้างตะกร้า
         cartService.clearCart();
 
         return savedOrder;
@@ -74,11 +67,16 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.findByUserId(user.getId());
     }
 
-    /**
-     * (Helper) ดึง User ที่ล็อกอินอยู่
-     */
+
     private User getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userDao.findByUsername(username);
+    }
+
+    @Override
+    public List<UserOrder> findAllOrders() {
+        List<UserOrder> orders = orderDao.findAll();
+        orders.sort((a, b) -> b.getOrderDate().compareTo(a.getOrderDate()));
+        return orders;
     }
 }
